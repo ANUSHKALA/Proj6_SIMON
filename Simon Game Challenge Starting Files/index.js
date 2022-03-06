@@ -18,6 +18,8 @@ function nextSequence(){
     playSound(randomColor);
     var chosenColor = $("."+randomColor).attr('id');
     buttonSequence.push(chosenColor);
+    console.log(buttonSequence.length)
+
     return buttonSequence;
 }
 
@@ -61,12 +63,22 @@ $(".btn").click(function () {
     var clickedButton = this.id;
     flashButton("."+clickedButton);
     playSound(clickedButton);
+    userButtonSequence.push(clickedButton);
+
+    console.log(userButtonSequence);
+    console.log(buttonSequence);
 });
 
 
 
 $(document).one('keydown',function (e) { 
     nextSequence();
-
 });
 
+
+
+for(let i = 0;i<buttonSequence.length;i++){
+    if(buttonSequence[i] == userButtonSequence[i]){
+        nextSequence();
+    }
+}

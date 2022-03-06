@@ -3,15 +3,20 @@
 var buttonColors = ['green','red','yellow','blue'];
 var buttonSequence = [];
 var userButtonSequence = [];
+
+
 var level = 0;
+var result;
 
 $("h1").click(function () { 
     console.log("hey");
 });
 
 function nextSequence(){
+    userButtonSequence = [];
     $("h1").text("Level "+level);
     level++;
+    
     var randomNumber = Math.round((Math.random())*3);
     var randomColor = buttonColors[randomNumber]
     flashButton("."+randomColor);
@@ -65,6 +70,49 @@ $(".btn").click(function () {
     playSound(clickedButton);
     userButtonSequence.push(clickedButton);
 
+    checkClick(userButtonSequence.length-1);
+
+
+
+function checkClick(currentLevel){
+    if(buttonSequence[currentLevel] == userButtonSequence[currentLevel]){
+
+        if(buttonSequence.length === userButtonSequence.length){
+            console.log(buttonSequence.length)
+            setTimeout(function () {
+                nextSequence();
+            }, 600);
+        }
+    }
+    else{
+        console.log("fail");
+        result = 'fail';
+
+    }
+
+
+    switch(result){
+        case "success":
+
+
+        break;
+        case "fail":
+            var aud = new Audio("../Simon Game Challenge Starting Files/sounds/wrong.mp3")
+            aud.play()
+            $("body").addClass("game-over");
+            setTimeout(function(){
+                $("body").removeClass("game-over");
+                $("h1").text("Game Over, Press Any Key to Restart");
+            },200);
+        break;
+        default: console.log('nothing happened');
+    }
+    
+}
+    
+
+
+
     console.log(userButtonSequence);
     console.log(buttonSequence);
 });
@@ -73,12 +121,7 @@ $(".btn").click(function () {
 
 $(document).one('keydown',function (e) { 
     nextSequence();
+
 });
 
 
-
-for(let i = 0;i<buttonSequence.length;i++){
-    if(buttonSequence[i] == userButtonSequence[i]){
-        nextSequence();
-    }
-}
